@@ -1,4 +1,5 @@
 #/usr/bin/python3
+from collections import deque
 
 class Hash():
     """ Custom made hash table.
@@ -76,6 +77,9 @@ class Hash():
 
         return None
 
+    def get_keys(self):
+        return self.key_arr
+
 def run_tests():
     ''' Test case'''
     h = Hash()
@@ -126,5 +130,39 @@ def run_tests():
     print("All assertions passed. Other tests manually checked!")
 
 
-# def bfs
+def shortest_path(start, target):
+    table = Hash()
+    table.add(  
+                'Alice', ['Bob', 'Charlie'],
+                'Bob', ['Alice', 'David'],
+                'Charlie', ['Alice', 'Eva'],
+                'David', ['Bob', 'Frank'],
+                'Eva', ['Charlie'],
+                'Frank', ['David']
+    )
 
+    output = list()
+    searched = set()
+    search_queue = deque()
+    search_queue.append(start)
+
+
+    while search_queue:
+        node = search_queue.popleft()
+        if not isinstance(node, list):
+            node = [node]
+        for i_node in node:
+            if i_node not in searched: # key not searched
+                output.append(i_node) # key appended to output being part of process
+                searched.add(i_node) # added to search
+                print()
+                print(i_node)
+                print()
+            else:
+                continue # if searched we skip and move to next iteratipn
+            if target not in table.get(i_node):
+                search_queue.append(table.get(i_node))
+            else:
+                return output
+
+print(shortest_path(start='Alice', target='Eva'))
